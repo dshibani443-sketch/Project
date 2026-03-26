@@ -7,6 +7,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Forgotpass from "./pages/Forgotpass";
 import VerifyOTP from "./pages/Verifyotp";
 import NewPassword from "./pages/Newpassword";
+import Income from "./pages/Income";
+import Expense from "./pages/Expense";
 
 
 function App() {
@@ -18,13 +20,15 @@ function App() {
           <Route path="/Register" element={<Register />} />
           <Route path="/Dashboard" 
           element={
-                <protectedRoute>
+                <ProtectedRoute>
                   <Dashboard/>
-                </protectedRoute>
+                </ProtectedRoute>
           } />
           <Route path="/Forgotpass" element={<Forgotpass/>}/>
           <Route path="/Verifyotp" element={<VerifyOTP/>}/>
           <Route path="/Newpassword" element={<NewPassword/>}/>
+          <Route path="/Income" element={<Income/>}/>
+          <Route path="/Expense" element={<Expense/>}/>
           
         </Routes>
       </BrowserRouter>
