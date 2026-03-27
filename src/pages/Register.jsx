@@ -11,6 +11,7 @@ import { FaCheck } from "react-icons/fa";
 import API from "../services/api";
 
 
+console.log(import.meta.env.VITE_API_URL)
 
 function Register() {
 
@@ -86,8 +87,12 @@ function Register() {
 
             navigate("/"); // go to login
         } catch (err) {
-            console.log(err);
-            alert("Registration Failed ❌");
+            if (err.response) {
+                console.log("Backend error:", err.response);
+                alert(err.response.data.detail);
+            } else {
+                alert("Server error");
+            }
         }
     };
 
