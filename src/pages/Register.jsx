@@ -139,7 +139,7 @@ function Register() {
                                 className="cursor-pointer"
                                 onClick={() => setShowPassword(!showPassword)}
                             >
-                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                {showPassword ? <FaEye /> : <FaEyeSlash />}
                             </span>
                         </div>
 
@@ -157,7 +157,7 @@ function Register() {
                                 className="cursor-pointer"
                                 onClick={() => setShowConfirm(!showConfirm)}
                             >
-                                {showConfirm ? <FaEyeSlash /> : <FaEye />}
+                                {showConfirm ? <FaEye /> : <FaEyeSlash />}
                             </span>
                         </div>
 
