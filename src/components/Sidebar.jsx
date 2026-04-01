@@ -1,5 +1,7 @@
 // import React from "react";
 import logo from "../assets/images/logo.png";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import {
     Home,
     Wallet,
@@ -14,6 +16,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 function Sidebar() {
     const navigate = useNavigate();
+    const {user} = useContext(AuthContext)
+    console.log(user);
 
 
     
