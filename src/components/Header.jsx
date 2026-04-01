@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext  } from "react";
 import { Search, Bell, Moon } from "lucide-react";
+import { AuthContext } from "../context/AuthContext";
+
 
 function Header() {
     const [darkMode, setDarkMode] = useState(false);
+     const {user} = useContext(AuthContext)
 
     useEffect(() => {
         if (darkMode) {
@@ -45,7 +48,7 @@ function Header() {
                 </button>
 
                 {/* User Name */}
-                <span className="font-medium">John Doe</span>
+                <span className="font-medium">{user.username}</span>
                 <img
                     src="https://i.pravatar.cc/40"
                     alt="user"

@@ -103,8 +103,8 @@ function Sidebar() {
 
                     {/* User Info */}
                     <div className="flex flex-col">
-                        <span className="text-sm font-semibold">John Doe</span>
-                        <span className="text-xs text-slate-400">john@example.com</span>
+                        <span className="text-sm font-semibold">{user.username}</span>
+                        <span className="text-xs text-slate-400">{user.email}</span>
                     </div>
 
                 </div>
