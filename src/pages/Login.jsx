@@ -28,7 +28,7 @@ function Login() {
 
     const { user } = useContext(AuthContext);
 
-    useEffect(()=>{
+    useEffect(() => {
         if (user) {
             navigate("/dashboard")
         }
@@ -80,7 +80,7 @@ function Login() {
             navigate("/dashboard");
 
         } catch (err) {
-             if (err.response) {
+            if (err.response) {
                 console.log("Backend error:", err.response);
                 toast.error(err.response.data.detail)
 
@@ -95,9 +95,9 @@ function Login() {
 
     return (
 
-        <main className='flex flex-col items-center justify-center w-full flex-1 px-20 text-center h-screen'>
-            <div className='rounded-2xl shadow-2xl flex w-2/3 max-w-4xl'>
-                <div className='w-3/5  '>
+        <main className='flex items-center justify-center min-h-screen px-4 bg-gray-100'>
+            <div className='flex flex-col md:flex-row w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden'>
+                <div className='w-full md:w-1/2 p-6 md:p-10'>
                     <div className=" mx-10" style={{
                         width: "70px",
                         height: "70px",
@@ -146,7 +146,7 @@ function Login() {
                                     <FaLock className="text-gray-400 m-2" />
                                     <input type="password" onChange={handleChange} placeholder='password' name='password' required className='outline-none w-95' />
                                 </div> */}
-                                
+
 
                                 <div className="relative w-95 mb-4">
                                     <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
@@ -218,20 +218,28 @@ function Login() {
                         </div>
                     </div>
                 </div>
-                <div className='w-3/7 rounded-tr-2xl rounded-br-2xl py-36 px-12' style={{
-                    width: "450px",
-                    height: "600px",
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    backgroundImage: `url(${spend})`
-                }} >
-                    <div className='relative right-[70px] bottom-[120px] text-3xl text-white'>
-                        <h2>SmartSpend <span className='text-blue-300'>AI</span></h2>
-                        <h4 className=' text-xl'><FaCheck className='relative left-[60px] top-[20px] text-sm' />Track Expenses</h4>
+                <div
+                    className="hidden md:flex w-1/2 text-white"
+                    style={{
+                        backgroundImage: `url(${spend})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                    }}
+                >
+                    <div className="p-6 rounded-xl">
+                        <h2 className="text-4xl mb-4">
+                            SmartSpend <span className="text-blue-300">AI</span>
+                        </h2>
 
-                        <h4 className=' text-xl'><FaCheck className='relative left-[60px] top-[20px] text-sm' /><span className='relative left-[40px]'> Predict future spending</span></h4>
-                        <h4 className=' text-xl'><FaCheck className='relative left-[60px] top-[20px] text-sm' /> <span className='relative left-[30px]'>Secure your finances</span></h4>
+                        <p className="flex items-center mb-2">
+                            <FaCheck className="mr-2" /> Track Expenses
+                        </p>
+                        <p className="flex items-center mb-2">
+                            <FaCheck className="mr-2" /> Predict future Spending
+                        </p>
+                        <p className="flex items-center">
+                            <FaCheck className="mr-2" /> Secure your Finances
+                        </p>
                     </div>
                 </div>
 
