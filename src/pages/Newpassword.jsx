@@ -1,16 +1,36 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { toast } from "react-toastify";
 
 
 function NewPassword() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
+    // ✅ NEW: state for toggle visibility
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
     const navigate = useNavigate();
 
+    // ✅ NEW: strong password validation function
+    const isStrongPassword = (pwd) => {
+        const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
+        return regex.test(pwd);
+    };
+
     const handleSubmit = async () => {
+
+        // ✅ NEW: check strong password
+        if (!isStrongPassword(password)) {
+            toast.error("Password must be at least 8 characters.");
+            return;
+        }
+
         if (password !== confirmPassword) {
-            alert("Passwords do not match");
+            toast.error("Passwords do not match");
             return;
         }
 
@@ -18,22 +38,21 @@ function NewPassword() {
             const resetToken = sessionStorage.getItem("reset_token");
 
             const res = await API.post("/auth/reset-password", {
-                new_password:password,
+                new_password: password,
                 reset_token: resetToken
             });
-            console.log(resetToken);
-            console.log(res);
+            console.log(resetToken); //for check remove lettter
+            console.log(res);//for check remove lettter
+
+            toast.success("Password updated successfully."); 
             
-
-            alert("Password updated successfully ✅");
-
             // optional: remove token after use
             sessionStorage.removeItem("reset_token");
 
             navigate("/");
 
         } catch (error) {
-            alert(error.response?.data?.message || "Error updating password");
+            toast.error(error.response?.data?.message || "Error updating password");
         }
     };
 
@@ -44,24 +63,32 @@ function NewPassword() {
                     Create New Password
                 </h2>
 
-                <div className="bg-gray-100 w-90 p-3 rounded-xl flex flex-col mt-3">
+                {/* ✅ Password Input with Eye Icon */}
+                <div className="bg-gray-100 w-90 p-3 rounded-xl flex items-center mt-3">
                     <input
-                        type="password"
+                        type={showPassword ? "text" : "password"}  // ✅ NEW
                         placeholder="New Password"
-                        className="outline-none w-90"
+                        className="outline-none w-full"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
+                    <span onClick={() => setShowPassword(!showPassword)} className="cursor-pointer">
+                        {showPassword ? <FaEyeSlash /> : <FaEye />} {/* ✅ NEW */}
+                    </span>
                 </div>
 
-                <div className="bg-gray-100 w-90 p-3 rounded-xl flex flex-col mt-3">
+                {/* ✅ Confirm Password Input with Eye Icon */}
+                <div className="bg-gray-100 w-90 p-3 rounded-xl flex items-center mt-3">
                     <input
-                        type="password"
+                        type={showConfirmPassword ? "text" : "password"}  // ✅ NEW
                         placeholder="Confirm Password"
-                        className="outline-none w-90"
+                        className="outline-none w-full"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
+                    <span onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="cursor-pointer">
+                        {showConfirmPassword ? <FaEyeSlash /> : <FaEye />} {/* ✅ NEW */}
+                    </span>
                 </div>
 
                 <button

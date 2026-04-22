@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import API from "../services/api";
+import { toast } from "react-toastify";
 
 function VerifyOTP() {
     const navigate = useNavigate();
@@ -82,12 +83,12 @@ function VerifyOTP() {
         const finalOtp = otp.join("");
 
         if (finalOtp.length !== 6) {
-            alert("Enter valid OTP");
+            toast.error("Enter valid OTP");
             return;
         }
 
         if (timeLeft <= 0) {
-            alert("OTP expired. Please resend.");
+            toast.dismiss("OTP expired. Please resend.");
             return;
         }
 
@@ -100,14 +101,14 @@ function VerifyOTP() {
             if (res.data.success) {
                 sessionStorage.setItem("reset_token", res.data.reset_token);
 
-                alert(res.data.message || "OTP Verified Successfully");
+                toast.success(res.data.message || "OTP Verified Successfully");
 
                 navigate("/newpassword", { state: { email } });
             } else {
-                alert(res.data.message || "Invalid OTP");
+                toast.error(res.data.message || "Invalid OTP");
             }
         } catch (error) {
-            alert(error.response?.data?.message || "Something went wrong");
+            toast.error(error.response?.data?.message || "Something went wrong");
         }
     };
 
@@ -123,9 +124,9 @@ function VerifyOTP() {
 
             setOtp(["", "", "", "", "", ""]);
 
-            alert("OTP resent successfully");
+            toast.success("OTP resent successfully");
         } catch (err) {
-            alert(err.response?.data?.detail || "Server error");
+            toast.error(err.response?.data?.detail || "Server error");
         }
     };
 

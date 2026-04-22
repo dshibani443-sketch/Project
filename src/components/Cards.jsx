@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Wallet, TrendingUp, TrendingDown, PiggyBank } from "lucide-react";
 
 import Expensechart from "./Expensechart";
@@ -8,40 +9,85 @@ import Categorychart from "./Categorychart";
 
 function Cards() {
 
-  // ✅ FIX: Define cards array
+  // 🔹 State for dashboard data
+  const [data, setData] = useState({
+    totalIncome: 0,
+    totalExpense: 0,
+    totalBalance: 0,
+    savings: 0,
+  });
+
+  const [loading, setLoading] = useState(true);
+
+  // 🔹 Fetch dashboard data
+  useEffect(() => {
+    fetchDashboard();
+  }, []);
+
+  const fetchDashboard = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/dashboard");
+
+      // Expected response:
+      // { totalIncome, totalExpense, totalBalance, savings }
+
+      setData(res.data);
+    } catch (err) {
+      console.error("Error fetching dashboard:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 🔹 Percentage calculation (optional)
+  const incomePercent =
+    data.totalIncome > 0
+      ? ((data.totalIncome - data.totalExpense) / data.totalIncome * 100).toFixed(0)
+      : 0;
+
+  const expensePercent =
+    data.totalIncome > 0
+      ? ((data.totalExpense / data.totalIncome) * 100).toFixed(0)
+      : 0;
+
+  // 🔹 Dynamic Cards
   const cards = [
     {
       title: "Total Balance",
-      amount: "₹0.00",
+      amount: `₹${data.totalBalance}`,
       subtitle: "This Month",
       icon: Wallet,
       color: "bg-blue-100 text-blue-600",
     },
     {
       title: "Income",
-      amount: "₹0.00",
+      amount: `₹${data.totalIncome}`,
       subtitle: "This Month",
-      extra: "00%",
+      extra: `+${incomePercent}%`,
       icon: TrendingUp,
       color: "bg-green-100 text-green-600",
     },
     {
       title: "Expense",
-      amount: "₹0.00",
+      amount: `₹${data.totalExpense}`,
       subtitle: "This Month",
-      extra: "00%",
+      extra: `-${expensePercent}%`,
       icon: TrendingDown,
       color: "bg-red-100 text-red-600",
     },
     {
       title: "Savings",
-      amount: "₹0.00",
+      amount: `₹${data.savings}`,
       subtitle: "This Month",
-      extra: "00%",
+      extra: `${incomePercent}%`,
       icon: PiggyBank,
       color: "bg-purple-100 text-purple-600",
     },
   ];
+
+  // if (loading) {
+  //   return <p className="text-center mt-10">Loading dashboard...</p>;
+  // }
 
   return (
     <div className="p-3">
@@ -93,22 +139,18 @@ function Cards() {
       {/* 🔹 Charts + AI Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-6">
 
-        {/* Monthly Expenses */}
         <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
           <Expensechart />
         </div>
 
-        {/* Category */}
         <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
           <Categorychart />
         </div>
 
-        {/* Transactions */}
-        <div className="lg:col-span-2 bg-white  dark:bg-gray-800 p-4 rounded-xl shadow">
+        <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
           <Recenttransactions />
         </div>
 
-        {/* AI Prediction */}
         <div className="bg-gradient-to-br from-blue-900 to-blue-600 text-white p-4 rounded-xl shadow">
           <AIPrediction />
         </div>

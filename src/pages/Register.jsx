@@ -6,6 +6,7 @@ import { useState } from "react";
 import spend from "../assets/images/spend.png";
 import logo from "../assets/images/logo.png";
 import API from "../services/api";
+import { toast } from "react-toastify";
 
 //02.04.2026 add by suman
 
@@ -33,7 +34,7 @@ function Register() {
     const validateEmail = () => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!regex.test(form.email.trim())) {
-            alert("Please enter a valid email address");
+            toast.error("Please enter a valid email address");
             return false;
         }
         return true;
@@ -42,7 +43,7 @@ function Register() {
     const validatePassword = () => {
         const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
         if (!regex.test(form.password)) {
-            alert("Password must contain: 8 characters, 1 uppercase, 1 number, 1 special character");
+            toast.info("Password must be strong.");
             return false;
         }
         return true;
@@ -52,7 +53,7 @@ function Register() {
         e.preventDefault();
 
         if (!form.username || !form.email || !form.password) {
-            alert("All fields required");
+            toast.error("All fields required");
             return;
         }
 
@@ -60,19 +61,19 @@ function Register() {
         if (!validatePassword()) return;
 
         if (form.password !== confirmPassword) {
-            alert("Passwords do not match");
+            toast.error("Passwords do not match");
             return;
         }
 
         try {
             const res = await API.post("/auth/register", form);
-            alert("Registration Successful 🎉");
+            toast.success("Registration Successful ✅");
             navigate("/");
         } catch (err) {
             if (err.response) {
-                alert(err.response.data.detail);
+                toast.error(err.response.data.detail);
             } else {
-                alert("Server error");
+                toast.error("Server error");
             }
         }
     };
